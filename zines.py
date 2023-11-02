@@ -57,13 +57,13 @@ def diff1(a, b):
 def find(n, m, done=None):
     if done is None:
         done = [(0,1), (0,0), (1,0)]
-    if not connected_empty(n, m, done):
-        return []
     if len(done) == n * m + 1:
         if done[-1] == done[0] and is_max(done):
             return [done]
         else:
             return []
+    if (done[-1][0] == n - 1 or done[-1][1] == m - 1) and not connected_empty(n, m, done):
+        return []
     if (1, 1) in done and (0, 2) in done:
         return []
     if done[0] in done[1:]:
