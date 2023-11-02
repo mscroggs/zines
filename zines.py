@@ -34,11 +34,6 @@ def plot(path):
     plt.show()
 
 
-def valid(path):
-    moves = ["h" if i[1] == j[1] else "v" for i, j in zip(path[:-1], path[1:])]
-    return "v" not in moves[::2] or "v" not in moves[1::2]
-
-
 def connected_empty(n, m, path):
     if max(i[0] for i in path) < n-1 and max(i[1] for i in path) < m-1:
         return True
@@ -61,19 +56,57 @@ def diff1(a, b):
 
 def find(n, m, done=None):
     if done is None:
-        done = [(0,0), (1,0)]
-    if not valid(done) or not connected_empty(n, m, done):
+        done = [(0,1), (0,0), (1,0)]
+    if not connected_empty(n, m, done):
         return []
-    if len(done) == n * m:
-        if done[-1] == (0,1) and valid(done + [(0,0)]):
-            return [done + [(0,0)]]
+    if len(done) == n * m + 1:
+        if done[-1] == done[0] and is_max(done):
+            return [done]
         else:
             return []
-    if (0,1) in done:
+    if (1, 1) in done and (0, 2) in done:
+        return []
+    if done[0] in done[1:]:
         return []
     d = done[-1]
     out = []
-    for next in [(d[0] + 1, d[1]), (d[0] - 1, d[1]), (d[0], d[1] - 1), (d[0], d[1] + 1)]:
-        if 0 <= next[0] < n and 0 <= next[1] < m and next not in done:
-            out += find(n, m, done + [next])
+    for n1 in [
+        (d[0] + 1, d[1]),
+        (d[0] - 1, d[1]),
+        (d[0], d[1] - 1),
+        (d[0], d[1] + 1),
+    ]:
+        if 0 <= n1[0] < n and 0 <= n1[1] < m and n1 not in done:
+            for n2 in [
+                (n1[0] - 1, n1[1]),
+                (n1[0] + 1, n1[1]),
+            ]:
+                if 0 <= n2[0] < n and 0 <= n2[1] < m and n2 not in done[1:]:
+                    out += find(n, m, done + [n1, n2])
     return out
+
+
+def permutations(r):
+    n = max(i[0] for i in r)
+    m = max(i[1] for i in r)
+    out = []
+    for f in [
+        lambda i, j: (i, j),
+        lambda i, j: (i, m - j),
+        lambda i, j: (n - i, j),
+        lambda i, j: (n - i, m - j),
+    ]:
+        r2 = [f(*i) for i in r[:-1]]
+        i = r2.index((0, 1))
+        r2 = r2[i:] + r2[:i]
+        if r2[1] != (0,0):
+            r2 = [r2[0]] + r2[:0:-1]
+        out.append(r2 + [r2[0]])
+    return out
+
+
+def is_max(r):
+    for i in permutations(r):
+        if i > r:
+            return False
+    return True
