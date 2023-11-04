@@ -68,8 +68,16 @@ def find(n, m, done=None):
             return [done]
         else:
             return []
-    if (done[-1][0] == n - 1 or done[-1][1] == m - 1) and not connected_empty(n, m, done):
-        return []
+    if done[-1][0] == n - 1:
+        for j in range(done[-1][1]):
+            if (n-1, j) not in done:
+                return []
+    if done[-1][1] == m - 1:
+        for i in range(done[-1][0], n):
+            if (i, m-1) not in done:
+                return []
+    #if (done[-1][0] == n - 1 or done[-1][1] == m - 1) and not connected_empty(n, m, done):
+    #    return []
     if (1, 1) in done:
         return []
     if done[0] in done[1:]:
