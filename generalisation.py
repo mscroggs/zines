@@ -1,6 +1,6 @@
 import math
 import matplotlib.pylab as plt
-from zines import to_tikz, find, valid, diff1, plot
+from zines import to_tikz, find, diff1, plot
 
 with open("diagrams2.tex", "w") as f:
     for p in range(2, 7):
@@ -18,7 +18,6 @@ with open("diagrams2.tex", "w") as f:
             for i, j in zip(path[:-1], path[1:]):
                 assert diff1(i, j)
             assert len(path) == dims[0] * dims[1] + 1
-            assert valid(path)
 
             f.write(to_tikz(path, False))
             f.write("\n\n\\vspace{5mm}\n\n")

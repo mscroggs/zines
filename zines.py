@@ -53,20 +53,30 @@ def diff1(a, b):
         return True
     return False
 
-
+total = 0
 def find(n, m, done=None):
+    global total
     if done is None:
+        total = 0
         done = [(0,1), (0,0), (1,0)]
+    #if len(done) <= n * m / 2:
+    #    print(done)
     if len(done) == n * m + 1:
         if done[-1] == done[0] and is_max(done):
+            total += 1
+            print(total)
             return [done]
         else:
             return []
     if (done[-1][0] == n - 1 or done[-1][1] == m - 1) and not connected_empty(n, m, done):
         return []
-    if (1, 1) in done and (0, 2) in done:
+    if (1, 1) in done:
         return []
     if done[0] in done[1:]:
+        return []
+    if done[-1][0] == 1 and (0, done[-1][1]) not in done:
+        return []
+    if done[-1][0] == n - 2 and (n - 1, done[-1][1]) not in done:
         return []
     d = done[-1]
     out = []
@@ -77,12 +87,17 @@ def find(n, m, done=None):
         (d[0], d[1] + 1),
     ]:
         if 0 <= n1[0] < n and 0 <= n1[1] < m and n1 not in done:
-            for n2 in [
-                (n1[0] - 1, n1[1]),
-                (n1[0] + 1, n1[1]),
-            ]:
-                if 0 <= n2[0] < n and 0 <= n2[1] < m and n2 not in done[1:]:
-                    out += find(n, m, done + [n1, n2])
+            if n1[0] == 1 and (0, n1[1]) not in done:
+                out += find(n, m, done + [n1, (0, n1[1])])
+            elif n1[0] == n-2 and (n-1, n1[1], n-1) not in done:
+                out += find(n, m, done + [n1, (n - 1, n1[1])])
+            else:
+                for n2 in [
+                    (n1[0] - 1, n1[1]),
+                    (n1[0] + 1, n1[1]),
+                ]:
+                    if 0 <= n2[0] < n and 0 <= n2[1] < m and n2 not in done[1:]:
+                        out += find(n, m, done + [n1, n2])
     return out
 
 
