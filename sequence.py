@@ -5,6 +5,7 @@ assert len(find(2, 2)) == 1
 assert len(find(4, 2)) == 1
 assert len(find(4, 4)) == 1
 assert len(find(8, 4)) == 3
+assert len(find(8, 8)) == 31
 
 with open("b367038.txt", "w") as f:
     pass
