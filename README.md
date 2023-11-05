@@ -6,5 +6,5 @@ and the images in [this blog post](https://mscroggs.co.uk/blog/106).
 To generate the OEIS sequence, run:
 
 ```bash
-python3 seqeunce.py
+python3 sequence.py
 ```
