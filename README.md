@@ -8,3 +8,5 @@ To generate the OEIS sequence, run:
 ```bash
 python3 sequence.py
 ```
+
+Note that this script will likely take around 4-6 hours to compute the 6th term of the sequence.
