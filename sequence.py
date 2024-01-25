@@ -1,4 +1,5 @@
 import matplotlib.pylab as plt
+import zines
 from time import time
 
 maps = [
@@ -133,6 +134,7 @@ for w, h, n in [
     f = find(w, h)
     print(w, h, f, n)
     assert f == n
+    assert len(zines.find(w, h)) == n
 
 with open("b367038.txt", "w") as f:
     pass
