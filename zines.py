@@ -125,7 +125,23 @@ def permutations(r):
 
 
 def is_max(r):
+    return is_max_new(r)
     for i in permutations(r):
         if i > r:
             return False
     return True
+
+
+def is_max_new(r):
+    edges = sorted([(min(a, b), max(a, b)) for a, b in zip(r, r[1:])])
+    n = max(i[0] for i in r)
+    m = max(i[1] for i in r)
+    return edges == max(
+        sorted([tuple(sorted([f(*v) for v in e])) for e in edges])
+        for f in [
+            lambda i, j: (i, j),
+            lambda i, j: (i, m - j),
+            lambda i, j: (n - i, j),
+            lambda i, j: (n - i, m - j),
+        ])
+

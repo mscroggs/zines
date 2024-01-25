@@ -102,7 +102,7 @@ def find_all(n, m, edges=None, remaining_vertices=None, next=None):
     return out
 
 
-def find(n, m, remove_symmetric=True):
+def find(n, m):
     global total
     total = 0
     return find_all(n, m)
@@ -143,6 +143,3 @@ for i, dims in enumerate([(2, 2), (4, 2), (4, 4), (8, 4), (8, 8), (16, 8)]):
     print(i + 2, term, f"(computed in {time() - start}s)")
     with open("b367038.txt", "a") as f:
         f.write(f"{i+2} {term}\n")
-
-# Luna says:
-# 315434
